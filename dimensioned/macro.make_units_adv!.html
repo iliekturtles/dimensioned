@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `make_units_adv!` macro in crate `dimensioned`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, make_units_adv!">
+
+    <title>dimensioned::make_units_adv! - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../main.css">
+    
+
+    <link rel="shortcut icon" href="http://paholg.com/dimensioned/imgs/favicon.png">
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        <a href='../dimensioned/index.html'><img src='http://paholg.com/dimensioned/imgs/favicon.png' alt='logo' width='100'></a>
+        <p class='location'><a href='index.html'>dimensioned</a></p><script>window.sidebarCurrent = {name: 'make_units_adv!', ty: 'macro', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content macro">
+<h1 class='fqn'><span class='in-band'><a href='index.html'>dimensioned</a>::<wbr><a class='macro' href=''>make_units_adv!</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-1050' class='srclink' href='../src/dimensioned/src/make_units.rs.html#121-227' title='goto source code'>[src]</a></span></h1>
+<pre class='rust macro'>
+<span class='macro'>macro_rules</span><span class='macro'>!</span> <span class='ident'>make_units_adv</span> {
+    (<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>System</span>:<span class='ident'>ident</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>Unitless</span>:<span class='ident'>ident</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>one</span>:<span class='ident'>ident</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>OneType</span>:<span class='ident'>ident</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>val</span>:<span class='ident'>expr</span>;
+     <span class='ident'>base</span> {
+         $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>Root</span>:<span class='ident'>ident</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>Type</span>:<span class='ident'>ident</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>constant</span>:<span class='ident'>ident</span>, <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>print_as</span>:<span class='ident'>ident</span>;)<span class='op'>+</span>
+     }
+     <span class='ident'>derived</span> {
+         <span class='comment'>// $($derived_constant:ident: $Derived:ident = $FirstType:ident $($op:tt $Type:ident)*);*;</span>
+         $(<span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>derived_constant</span>:<span class='ident'>ident</span>: <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>Derived</span>:<span class='ident'>ident</span> <span class='op'>=</span> <span class='macro-nonterminal'>$</span><span class='macro-nonterminal'>e</span>:<span class='ident'>expr</span>;)<span class='op'>*</span>
+     } ) <span class='op'>=&gt;</span> { ... };
+}</pre>
+<div class='docblock'><p>Create a unit system with more flexibility than <code>make_units!()</code>.</p>
+
+<p>As this macro performs various imports, it is strongly recommended that you call it
+inside of its own module.</p>
+
+<h1 id='example' class='section-header'><a href='#example'>Example</a></h1>
+<p>Here we define the <strong>CGS</strong> unit system.</p>
+
+<pre class='rust rust-example-rendered'>
+<span class='attribute'>#[<span class='ident'>macro_use</span>]</span>
+<span class='kw'>extern</span> <span class='kw'>crate</span> <span class='ident'>dimensioned</span>;
+
+<span class='kw'>mod</span> <span class='ident'>cgs</span> {
+    <span class='macro'>make_units_adv</span><span class='macro'>!</span> {
+        <span class='ident'>CGS</span>, <span class='ident'>Unitless</span>, <span class='ident'>one</span>, <span class='ident'>f64</span>, <span class='number'>1.0</span>;
+        <span class='ident'>base</span> {
+            <span class='ident'>P2</span>, <span class='ident'>Centimeter</span>, <span class='ident'>cm</span>, <span class='ident'>cm</span>;
+            <span class='ident'>P2</span>, <span class='ident'>Gram</span>, <span class='ident'>g</span>, <span class='ident'>g</span>;
+            <span class='ident'>P1</span>, <span class='ident'>Second</span>, <span class='ident'>s</span>, <span class='ident'>s</span>;
+        }
+        <span class='ident'>derived</span> {
+        }
+    }
+}
+</pre>
+
+<p>The line <code>CGS, Unitless, one, f64, 1.0;</code> names the unit system <code>CGS</code>, names its type for
+unitless data <code>Unitless</code> and creates the corresponding constant <code>one</code>. It also states
+that all constants will be of type <code>Dim&lt;D, f64&gt;</code> and will be initialized to a value of
+<code>1.0</code>.</p>
+
+<p>Once associated constants hit, <code>std::num::One</code> will be used to determine the initalize value.</p>
+
+<p>The <code>base</code> block is used to define the base units of this system. The line <code>P2, Centimeter, cm, cm;</code> creates the unit <code>Centimeter</code>, the corresponding constant <code>cm</code>, and
+will use the token &quot;cm&quot; to print <code>Centimeter</code>s. It also states that square roots will be
+allowed for <code>Centimeter</code>s; the <code>P2</code> is the type number for 2 and dictates the highest
+root allowed. You will almost always want this to be <code>P1</code>. For <code>CGS</code>, though, some
+derived units are defined in terms of square roots of base units, so they are necessary
+to allow.</p>
+
+<p>The <code>derived</code> block is not yet implemented, but will be used to define derived units and
+constants.</p>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../";
+        window.currentCrate = "dimensioned";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../jquery.js"></script>
+    <script src="../main.js"></script>
+    
+    <script defer src="../search-index.js"></script>
+</body>
+</html>
