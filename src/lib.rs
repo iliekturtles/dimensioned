@@ -10,6 +10,7 @@ For in depth tutorials, check [here](http://paholg.com/project/dimensioned).
        html_root_url = "http://paholg.com/dimensioned")]
 #![warn(missing_docs)]
 
+#![no_std]
 #![feature(optin_builtin_traits, const_fn)]
 #![feature(type_macros)]
 

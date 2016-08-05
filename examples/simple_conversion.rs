@@ -7,6 +7,9 @@ use typenum::Integer;
 use std::ops::Mul;
 
 mod ms {
+    use std::ops::{Add, Div, Mul, Neg, Sub};
+    use std::marker::{PhantomData};
+
     make_units! {
         MS, Unitless, one;
         base {
@@ -24,6 +27,9 @@ mod ms {
 
 
 mod fs {
+    use std::ops::{Add, Div, Mul, Neg, Sub};
+    use std::marker::{PhantomData};
+
     make_units! {
         FS, Unitless, one;
         base {
@@ -57,5 +63,5 @@ fn main() {
     let x_ft = fs::FS::from_ms(x_m);
 
     use fs::FromFS;
-    println!("x in meters: {}, x in feet: {}, x in meters again: {}", x_m, x_ft, ms::MS::from_fs(x_ft));
+    //println!("x in meters: {}, x in feet: {}, x in meters again: {}", x_m, x_ft, ms::MS::from_fs(x_ft));
 }

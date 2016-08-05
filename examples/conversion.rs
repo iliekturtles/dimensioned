@@ -12,6 +12,9 @@ type Quot<A, B> = <A as Div<B>>::Output;
 
 
 mod fps {
+    use std::ops::{Add, Div, Mul, Neg, Sub};
+    use std::marker::{PhantomData};
+
     make_units_adv! {
         FPS, Unitless, one, f64, 1.0;
         base {
@@ -43,7 +46,7 @@ fn main() {
     let t2 = 10.0 * cgs::cm;
     let t2f = FPS::from_cgs(t2);
 
-    println!("t2: {}, t2f: {}", t2, t2f);
+    //println!("t2: {}, t2f: {}", t2, t2f);
 
     // let speed2 = speed.convert_to();
 

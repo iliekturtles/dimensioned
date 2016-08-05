@@ -25,32 +25,32 @@ fn main() {
 
 
     let start = -22.0*xhat*m + 5.0*yhat*m + 6.0*zhat*m;
-    println!("A physicist was standing on a hill at position {}.", start);
+    //println!("A physicist was standing on a hill at position {}.", start);
 
     let end = 26.0*xhat*m - 19.0*yhat*m;
-    println!("Then she walked down the hill to {}.", end);
+    //println!("Then she walked down the hill to {}.", end);
 
     let displace = end - start;
-    println!("So, her displacement vector was {}.", displace);
+    //println!("So, her displacement vector was {}.", displace);
 
     let time = 30.0*s;
-    println!("The walk took her {}.", time);
+    //println!("The walk took her {}.", time);
 
     let velocity = displace/time;
-    println!("She must have had an average velocity of {}.", velocity);
+    //println!("She must have had an average velocity of {}.", velocity);
 
     let speed = velocity.norm();
-    println!("So, her average speed was {}.", speed);
+    //println!("So, her average speed was {}.", speed);
 
     let center = 28.0*xhat*m - 21.0*yhat*m;
-    println!("Now, she's standing next to a merry-go-round, centered at {}.", center);
+    //println!("Now, she's standing next to a merry-go-round, centered at {}.", center);
 
     let force = 500.0*xhat*kg*m/s/s;
-    println!("She decides to spin it, pushing with a force of {}", force);
+    //println!("She decides to spin it, pushing with a force of {}", force);
 
     let r = end - center;
     let torque = r.cross(force);
-    println!("That's a torque of {}!", torque);
+    //println!("That's a torque of {}!", torque);
 }
 
 mod vector3b {

@@ -13,5 +13,5 @@ type MPS = <Meter as Div<Second>>::Output;
 #[test]
 fn derived() {
     let v: Dim<MPS, f64> = Dim::new(1.0);
-    println!("v: {}!", v);
+    //println!("v: {}!", v);
 }

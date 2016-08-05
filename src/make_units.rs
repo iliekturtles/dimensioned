@@ -103,7 +103,7 @@ unitless data `Unitless` and creates the corresponding constant `one`. It also s
 that all constants will be of type `Dim<D, f64>` and will be initialized to a value of
 `1.0`.
 
-Once associated constants hit, `std::num::One` will be used to determine the initalize value.
+Once associated constants hit, `core::num::One` will be used to determine the initalize value.
 
 The `base` block is used to define the base units of this system. The line `P2,
 Centimeter, cm, cm;` creates the unit `Centimeter`, the corresponding constant `cm`, and
@@ -130,9 +130,8 @@ macro_rules! make_units_adv {
         #[allow(unused_imports)]
         use $crate::{Z0, P1, P2, P3, P4, P5, P6, P7, P8, P9, N1, N2, N3, N4, N5, N6, N7, N8, N9};
         use $crate::Integer;
-        use $crate::{Dimension, Dimensionless, Dim, Pow, Root, Recip, DimToString};
-        use ::std::ops::{Add, Neg, Sub, Mul, Div};
-        use ::std::marker::PhantomData;
+        use $crate::{Dimension, Dimensionless, Dim, Pow, Root, Recip};
+        //use ::core::ops::{Add, Neg, Sub, Mul, Div};
 
         #[derive(Copy, Clone)]
         pub struct $System<$($Type: Integer = Z0),*> {
@@ -179,39 +178,39 @@ macro_rules! make_units_adv {
         }
 
 
-        fn pretty_dim(roots: [i32; count_args!($($Type),*)], exps: [i32; count_args!($($Type),*)], tokens: [&'static str; count_args!($($Type),*)]) -> String {
-            let mut __string = String::new();
-            for ((&root, &exp), &token) in roots.iter().zip(exps.iter()).zip(tokens.iter()) {
-                let __temp: (&'static str, String) = match exp {
-                    0 => ("", "".to_owned()),
-                    _ if exp == root => (token, "*".to_owned()),
-                    _ => {
-                        if exp % root == 0 {
-                            (token, format!("^{}*", exp/root))
-                        } else {
-                            (token, format!("^{:.2}*", exp as f32/root as f32))
-                        }
-                    },
-                };
-                __string = format!("{}{}{}", __string, __temp.0, __temp.1);
-            }
-            __string.pop(); // remove the last "*"
-            __string
-        }
+        //fn pretty_dim(roots: [i32; count_args!($($Type),*)], exps: [i32; count_args!($($Type),*)], tokens: [&'static str; count_args!($($Type),*)]) -> String {
+        //    let mut __string = String::new();
+        //    for ((&root, &exp), &token) in roots.iter().zip(exps.iter()).zip(tokens.iter()) {
+        //        let __temp: (&'static str, String) = match exp {
+        //            0 => ("", "".to_owned()),
+        //            _ if exp == root => (token, "*".to_owned()),
+        //            _ => {
+        //                if exp % root == 0 {
+        //                    (token, format!("^{}*", exp/root))
+        //                } else {
+        //                    (token, format!("^{:.2}*", exp as f32/root as f32))
+        //                }
+        //            },
+        //        };
+        //        __string = format!("{}{}{}", __string, __temp.0, __temp.1);
+        //    }
+        //    __string.pop(); // remove the last "*"
+        //    __string
+        //}
 
 
-        impl<$($Type),*> DimToString for $System<$($Type),*>
-            where $($Type: Integer),* {
-            fn to_string() -> String {
-                // fixme: add #[allow(unused_variables)] lints for these. Not working
-                // for me for some reason.
-                let allowed_roots = [$($Root::to_i32()),*];
-                let exponents = [$($Type::to_i32()),*];
-                let print_tokens = [$(stringify!($print_as)),*];
+        //impl<$($Type),*> DimToString for $System<$($Type),*>
+        //    where $($Type: Integer),* {
+        //    fn to_string() -> String {
+        //        // fixme: add #[allow(unused_variables)] lints for these. Not working
+        //        // for me for some reason.
+        //        let allowed_roots = [$($Root::to_i32()),*];
+        //        let exponents = [$($Type::to_i32()),*];
+        //        let print_tokens = [$(stringify!($print_as)),*];
 
-                pretty_dim(allowed_roots, exponents, print_tokens)
-            }
-        }
+        //        pretty_dim(allowed_roots, exponents, print_tokens)
+        //    }
+        //}
 
         pub type $Unitless = $System;
         impl Dimensionless for $Unitless {}

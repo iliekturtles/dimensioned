@@ -7,6 +7,9 @@ It will also define derived units, although this is not implemented yet.
 
 #![allow(missing_docs)]
 
+use core::ops::{Add, Div, Mul, Neg, Sub};
+use core::marker::{PhantomData};
+
 make_units! {
     SI, Unitless, one;
     base {

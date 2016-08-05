@@ -1,7 +1,7 @@
 /*!
 This module allows dimensioned to be very flexible. It creates the `Dim<D, V>` type,
 which is the type that will be used for all dimensioned objects. It then implements as
-many traits from `std` as generically as possible.
+many traits from `core` as generically as possible.
 
 Among the included traits in **dimensioned**, there are a few that are used solely to
 aid in generic programming and should not be implemented for anything outside this
@@ -10,12 +10,11 @@ module. They are `Dimension`, `Dimensionless`, and `DimToString`.
 
 use {Same, Integer, P2, P3};
 
-use std::marker::PhantomData;
+use core::marker::PhantomData;
 
-use std::ops::{Add, Sub, Mul, Div, Neg, BitAnd, BitOr, BitXor, FnOnce, Not, Rem, Shl, Shr};
+use core::ops::{Add, Sub, Mul, Div, Neg, BitAnd, BitOr, BitXor, FnOnce, Not, Rem, Shl, Shr};
 use num::traits::{Float, FromPrimitive, ToPrimitive, NumCast};
-use std::cmp::{Eq, PartialEq, Ord, PartialOrd, Ordering};
-use std::fmt;
+use core::cmp::{Eq, PartialEq, Ord, PartialOrd, Ordering};
 
 /**
 All types created for a unit system will implement this trait. No other types should
@@ -34,21 +33,21 @@ pub trait Dimensionless: Dimension {}
 
 /**
 This trait allows human-friendly printing of dimensioned objects. It is used to
-implement the traits in **std::fmt**.
+implement the traits in **core::fmt**.
 
 All types created for a unit system will implement this trait. No other types should
 implement it.
 */
-pub trait DimToString: Dimension {
-    /// Gives a human friendly `String` representation of a `Dimension` type.
-    fn to_string() -> String;
-}
+//pub trait DimToString: Dimension {
+//    /// Gives a human friendly `String` representation of a `Dimension` type.
+//    fn to_string() -> String;
+//}
 
 /// This is the primary struct that users of this library will interact with.
 pub struct Dim<D, V>(pub V, pub PhantomData<D>);
 
-use std::clone::Clone;
-use std::marker::Copy;
+use core::clone::Clone;
+use core::marker::Copy;
 impl<D, V: Clone> Clone for Dim<D, V> {
     fn clone(&self) -> Self { Dim::new(self.0.clone()) }
 }
@@ -246,7 +245,7 @@ impl<D, V> Recip for Dim<D, V> where D: Recip, V: Float, <D as Recip>::Output: D
 }
 
 // /**
-// **Convert** provides a useful trait for allowing unit conversions. The trait `std::convert::From` can't be used because it doesn't have an associated type.
+// **Convert** provides a useful trait for allowing unit conversions. The trait `core::convert::From` can't be used because it doesn't have an associated type.
 
 // # Example
 // ```
@@ -259,7 +258,7 @@ impl<D, V> Recip for Dim<D, V> where D: Recip, V: Float, <D as Recip>::Output: D
 // use typenum::int::Integer;
 // use typenum::consts::P2;
 
-// use std::ops::{Mul, Div};
+// use core::ops::{Mul, Div};
 
 // type Quot<A, B> = <A as Div<B>>::Output;
 
@@ -446,28 +445,28 @@ macro_rules! dim_impl_binary { ($Trait:ident, $fun:ident, $op:ident, $In:ty => $
 }
 
 //------------------------------------------------------------------------------
-// Traits from std::fmt
+// Traits from core::fmt
 //------------------------------------------------------------------------------
-macro_rules! dim_fmt {
-    ($Trait:ident, $str:expr) => (
-        impl<D, V> fmt::$Trait for Dim<D, V> where D: DimToString, V: fmt::$Trait {
-            fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-                write!(f, $str, self.0, <D as DimToString>::to_string())
-            }
-        }
-        );
-}
-dim_fmt!(Display, "{} {}");
-dim_fmt!(Debug, "{:?} {}");
-dim_fmt!(Octal, "{:o} {}");
-dim_fmt!(LowerHex, "{:x} {}");
-dim_fmt!(UpperHex, "{:X} {}");
-dim_fmt!(Pointer, "{:p} {}");
-dim_fmt!(Binary, "{:b} {}");
-dim_fmt!(LowerExp, "{:e} {}");
-dim_fmt!(UpperExp, "{:E} {}");
+//macro_rules! dim_fmt {
+//    ($Trait:ident, $str:expr) => (
+//        impl<D, V> fmt::$Trait for Dim<D, V> where D: DimToString, V: fmt::$Trait {
+//            fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
+//                write!(f, $str, self.0, <D as DimToString>::to_string())
+//            }
+//        }
+//        );
+//}
+//dim_fmt!(Display, "{} {}");
+//dim_fmt!(Debug, "{:?} {}");
+//dim_fmt!(Octal, "{:o} {}");
+//dim_fmt!(LowerHex, "{:x} {}");
+//dim_fmt!(UpperHex, "{:X} {}");
+//dim_fmt!(Pointer, "{:p} {}");
+//dim_fmt!(Binary, "{:b} {}");
+//dim_fmt!(LowerExp, "{:e} {}");
+//dim_fmt!(UpperExp, "{:E} {}");
 //------------------------------------------------------------------------------
-// Traits from std::cmp
+// Traits from core::cmp
 //------------------------------------------------------------------------------
 impl<Dl, Dr, Vl, Vr> PartialEq<Dim<Dr, Vr>> for Dim<Dl, Vl> where Dl: Same<Dr>, Vl: PartialEq<Vr> {
     fn eq(&self, other: &Dim<Dr, Vr>) -> bool {
@@ -502,7 +501,7 @@ impl<D: Same, V: Ord> Ord for Dim<D, V> {
     }
 }
 //------------------------------------------------------------------------------
-// Traits from std::ops
+// Traits from core::ops
 //------------------------------------------------------------------------------
 
 /// Multiplying!
@@ -707,7 +706,7 @@ impl<D, V> NumCast for Dim<D, V> where V: NumCast {
 }
 
 //------------------------------------------------------------------------------
-// impl<D, V> ::std::num::Zero for Dim<D, V> where V: ::std::num::Zero {
+// impl<D, V> ::core::num::Zero for Dim<D, V> where V: ::core::num::Zero {
 //     fn zero() -> Self {
 //         Dim::new(V::zero())
 //     }
@@ -716,7 +715,7 @@ impl<D, V> NumCast for Dim<D, V> where V: NumCast {
 //------------------------------------------------------------------------------
 // DIMENSIONLESS THINGS HERE
 //------------------------------------------------------------------------------
-// impl<D, V> ::std::num::One for Dim<D, V> where D: Dimensionless + Mul<D>, V: ::std::num::One + Mul {
+// impl<D, V> ::core::num::One for Dim<D, V> where D: Dimensionless + Mul<D>, V: ::core::num::One + Mul {
 //     fn one() -> Self {
 //         Dim::new(V::one())
 //     }
